@@ -27,7 +27,11 @@
             // Método Post
             if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-                // Capturar los datos y crear Objeto DTO
+                // Capturar los datos
+                
+                // Validar los datos
+                // ?????????
+                // Crear Objeto DTO
                 # Por Constructor
                 $userDto = new UserDto(
                     $_POST['rol_codigo'],
@@ -37,17 +41,16 @@
                 # Por Método Set('parámetro');
                 // $userDto2 = new UserDto;
                 // $userDto2->setCodigoRol($_POST['rol_codigo']);
-                // $userDto2->setNombreRol($_POST['rol_nombre']);
+                // $userDto2->setNombreRol($_POST['rol_nombre']);                
                 
-                // Validar los datos
-                // ?????????
+
                 // Pasar el Objeto DTO al método (CRUD) del Objeto DAO
                 $this->userDao->createRolDao($userDto);
 
                 // Redireccionar a un controlador o una página web                
-                require_once "views/roles/admin/header.php";
+               
                 # Objeto 1
-                echo "Se ha creado el ROL";
+                
                 // echo "<br><h1>Objeto 1: Constructor</h1>";
                 // echo "<br><h3>Código Rol: " . $userDto->getCodigoRol() . "</h3>";
                 // echo "<br><h3>Nombre Rol: " . $userDto->getNombreRol() . "</h3>";
@@ -56,17 +59,45 @@
                 // echo "<br><h1>Objeto 2: Métodos Set</h1>";
                 // echo "<br><h3>Código Rol: " . $userDto2->getCodigoRol() . "</h3>";
                 // echo "<br><h3>Nombre Rol: " . $userDto2->getNombreRol() . "</h3>";
-
-                require_once "views/roles/admin/footer.php";
-                // header("Location: ?c=Dashboard");
+                header("Location: ?c=Users&a=readRol");
             }
             
         }
 
-        // Consultar Roles
-
+        // Consultar Roles        
+		public function readRol(){			
+			$roles = $this->userDao->readRolDao();
+			require_once "views/roles/admin/header.php";            
+            require_once "views/modules/1_users/rol_read.view.php";
+            require_once "views/roles/admin/footer.php";
+			
+		}
+        
         // Actualizar Rol
+        public function updateRol(){
+            // Método Get
+            if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+                $rol = $this->userDao->getById($_GET['idRol']);
+                require_once "views/roles/admin/header.php";                
+                require_once "views/modules/1_users/rol_update.view.php";
+                require_once "views/roles/admin/footer.php";
+            }
+            // Método Post
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $userDto = new UserDto(
+                    $_POST['rol_codigo'],
+                    $_POST['rol_nombre']
+                );
+                $this->userDao->updateRolDao($userDto);
+                header("Location: ?c=Users&a=readRol");
+            }
+            
+        }
 
         // Eliminar Rol
+        public function deleteRol(){
+			$this->userDao->deleteRolDao($_GET['idRol']);
+			header('Location: ?c=Users&a=readRol');			
+		}
     }
 ?>

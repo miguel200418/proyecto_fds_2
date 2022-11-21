@@ -1,5 +1,5 @@
-	<!-- Área de Contenido -->
-	<div class="tope"></div>
+<!-- Área de Contenido -->
+<div class="tope"></div>
 		<div class="titulo">
 			<h1>Iniciar Sesión</h1>
 		</div>
